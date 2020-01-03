@@ -1,0 +1,13 @@
+version: '3'
+services: 
+    jupyter:
+        build: 
+            context: ./docker/jupyter/
+            dockerfile: Dockerfile
+        image: kryvokhyzha/predict-future-sales-final-project:latest
+        volumes: 
+            - .:/home/jovyan/
+        ports: 
+            - "8888:8888"
+        environment: 
+            - JUPYTER_ENABLE_LAB=yes
