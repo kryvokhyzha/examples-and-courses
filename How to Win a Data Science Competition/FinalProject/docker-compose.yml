@@ -4,7 +4,7 @@ services:
         build: 
             context: ./docker/jupyter/
             dockerfile: Dockerfile
-        image: kryvokhyzha/predict-future-sales-final-project:latest
+        image: kryvokhyzha/how-to-win-ds-competition:latest
         volumes: 
             - .:/home/jovyan/
         ports: 

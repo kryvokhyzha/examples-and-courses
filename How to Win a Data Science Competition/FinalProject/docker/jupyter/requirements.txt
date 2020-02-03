@@ -1,3 +1,10 @@
+# ----- Utiles -----
+#
+tqdm
+#
+# --------------------------------
+
+
 # ----- For DB -----
 #
 # psycopg2-binary==2.8.4
@@ -51,7 +58,7 @@
 # Flask-Uploads==0.2.1
 # Flask-WTF==0.14.2
 # gunicorn
-streamlit
+# streamlit
 #
 # --------------------------------
 
@@ -63,6 +70,8 @@ matplotlib
 seaborn
 plotly
 yellowbrick
+# ggplot
+# bokeh
 #
 #  --------------------------------
 
@@ -70,7 +79,8 @@ yellowbrick
 
 # ----- For Graph -----
 #
-# graphviz
+graphviz
+# networkx
 #
 #  --------------------------------
 
@@ -91,17 +101,17 @@ yellowbrick
 
 # ----- For ML -----
 #
-numpy
+numpy>=1.11
 pandas
 imblearn
-scikit-learn
-scipy
+scikit-learn>=0.22
+scipy>=0.17
 statsmodels
-fbprophet
+# fbprophet
 # pystan
 # 
-lightgbm
-catboost
-xgboost
+# lightgbm
+# catboost
+# xgboost
 #
 # --------------------------------
