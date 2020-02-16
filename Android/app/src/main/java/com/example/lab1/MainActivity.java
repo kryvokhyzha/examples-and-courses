@@ -13,40 +13,11 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    String[] groups = { "", "ІС-71", "ІС-72", "ІС-73" };
-    String[] faculties = { "", "ФІОТ", "ФПМ", "ІПСА" };
-
-    String group, faculty;
+    private String[] groups = { "", "ІС-71", "ІС-72", "ІС-73" };
+    private String[] faculties = { "", "ФІОТ", "ФПМ", "ІПСА" };
 
     private Spinner groupSpinner, facultiesSpinner;
 
-    AdapterView.OnItemSelectedListener groupItemSelectedListener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            group = (String) parent.getItemAtPosition(position);
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
-
-    AdapterView.OnItemSelectedListener facultyItemSelectedListener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            faculty = (String) parent.getItemAtPosition(position);
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
         groupSpinner.setAdapter(groupAdapter);
         facultiesSpinner.setAdapter(facultyAdapter);
-
-        groupSpinner.setOnItemSelectedListener(groupItemSelectedListener);
-        facultiesSpinner.setOnItemSelectedListener(facultyItemSelectedListener);
     }
 
     public void showMsg(View view) {
 
+        String group = groupSpinner.getSelectedItem().toString();
+        String faculty = facultiesSpinner.getSelectedItem().toString();
+
         if (group.equals("") || faculty.equals("")) {
             String msg = "Заповніть всі поля!";
-            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
             toast.show();
         } else {
             String msg = "Факультет: " + faculty + '\n' + "Група: " + group;
-            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
