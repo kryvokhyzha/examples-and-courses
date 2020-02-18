@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] groups = { "", "ІС-71", "ІС-72", "ІС-73" };
-    private String[] faculties = { "", "ФІОТ", "ФПМ", "ІПСА" };
+    private final String[] groups = { "", "ІС-71", "ІС-72", "ІС-73" };
+    private final String[] faculties = { "", "ФІОТ", "ФПМ", "ІПСА" };
 
     private Spinner groupSpinner, facultiesSpinner;
 
