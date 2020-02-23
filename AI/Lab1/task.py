@@ -27,8 +27,8 @@ def jealousy(current):
         if current.shore[i] != current.shore[noCouples + i]:  # husband is not with his wife
             for j in range(noCouples, noCouples * 2):
                 if current.shore[j] == current.shore[i]:  # another man is with the wife
-                    return 1
-    return 0
+                    return True
+    return False
 
 
 def change_position(bit):
@@ -49,7 +49,9 @@ def people_near_boat(state):
     people = deepcopy(state.shore)
     for i in range(0, len(state.shore)):
         if state.shore[i] == state.boat:
-            people[i] = 1
+            people[i] = True
+        else:
+            people[i] = False
     return people
 
 
@@ -76,7 +78,7 @@ def move(cap, state, movement, result, start):
     :return:
     """
     for i in range(start, len(state.shore)):
-        if people_near_boat(state)[i] == 1:  # if the person is on the same side as the boat
+        if people_near_boat(state)[i]:  # if the person is on the same side as the boat
             movement.append(i)  # add the person to the list of possible moves
             if cap > 1:  # if there is more space in the boat
                 # iterate; start for-loop with i to prevent duplicates (permutations)
@@ -92,18 +94,21 @@ def expand(state):
     # get all possible moves for the current State and capacity
     possible_moves = move(boat_capacity, state, [], result, 0)
     for pos_move in possible_moves:  # iterate through all possible state changes
-        following = deepcopy(state)
-        for person_idx in pos_move:
-            following.shore[person_idx] = change_position(state.shore[person_idx])  # move persons
-        following.boat = change_position(state.boat)  # move boat
-        if visited(following):  # check if state was already visited
-            continue
-        elif jealousy(following):  # check if there is jealousy
-            searched.append(following)
+        following_state = deepcopy(state)   # create next state
+        if len(set(pos_move)) == 1:  # move person
+            following_state.shore[pos_move[0]] = change_position(state.shore[pos_move[0]])
         else:
-            following.depth = following.depth + 1  # increase depth
-            following.path.append(state)  # add the parent node to the path
-            frontier.append(following)  # add the node to the frontier
+            for person_idx in pos_move:
+                following_state.shore[person_idx] = change_position(state.shore[person_idx])
+        following_state.boat = change_position(state.boat)  # move boat
+        if visited(following_state):  # check if state was already visited
+            continue
+        elif jealousy(following_state):  # check if there is jealousy
+            searched.append(following_state)
+        else:
+            following_state.depth += + 1  # increase depth
+            following_state.path.append(state)  # add the parent node to the path
+            frontier.append(following_state)  # add the node to the frontier
 
 
 def dfs():
@@ -118,7 +123,7 @@ def dfs():
             return current  # if heuristic function equals 0, the goal is reached
 
         expand(current)  # expand and add new states to frontier
-        searched.append(current)  # add the current node to the closed list3
+        searched.append(current)  # add the current node to the closed list
         print('current', current.shore)
 
 
