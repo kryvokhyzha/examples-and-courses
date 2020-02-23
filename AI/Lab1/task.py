@@ -1,5 +1,4 @@
 from copy import deepcopy
-import time
 
 
 class State:
@@ -19,6 +18,11 @@ class State:
 
 
 def jealousy(current):
+    """
+    Check jealousy for current state.
+    :param current:
+    :return:
+    """
     for i in range(0, noCouples):
         if current.shore[i] != current.shore[noCouples + i]:  # husband is not with his wife
             for j in range(noCouples, noCouples * 2):
@@ -27,42 +31,52 @@ def jealousy(current):
     return 0
 
 
-def alterbit(bit):  # used to change position of people or the boat
+def change_position(bit):
+    """
+    Used to change position of people or the boat.
+    :param bit:
+    :return:
+    """
     return abs(bit - 1)
 
 
-def isGood(state):  # people on the same side as the boat are "good"
-    good_people = deepcopy(state.shore)
-    for i in range(0, len(state.shore)):
-        if state.shore[i] == state.boat:
-            good_people[i] = 1
-    return good_people
-
-
-def h(state):  # the heuristic function equals the number of people who are not on the goal shore
+def people_near_boat(state):
     """
-    Check if it is goal (sum of shore == 6 and boat == 1)
-
+    Get people on the same side as the boat.
     :param state:
     :return:
     """
-    result = len(state.shore)
-    for i in state.shore:
-        result = result - i
-    return result
+    people = deepcopy(state.shore)
+    for i in range(0, len(state.shore)):
+        if state.shore[i] == state.boat:
+            people[i] = 1
+    return people
 
 
-def visited(state, searched):  # determines whether a State has already been visited
-    for k in range(0, len(searched)):
-        if state.shore == searched[k].shore and state.boat == searched[k].boat:
+def visited(state):
+    """
+    Determines whether a State has already been visited.
+    :param state:
+    :return:
+    """
+    for searched_state in searched:
+        if state.shore == searched_state.shore and state.boat == searched_state.boat:
             return True
     return False
 
 
 def move(cap, state, movement, result, start):
-    # computes all possible moves from a current State with a certain boat capacity
+    """
+    Computes all possible moves from a current State with a certain boat capacity.
+    :param cap:
+    :param state:
+    :param movement:
+    :param result:
+    :param start:
+    :return:
+    """
     for i in range(start, len(state.shore)):
-        if isGood(state)[i] == 1:  # if the person is on the same side as the boat
+        if people_near_boat(state)[i] == 1:  # if the person is on the same side as the boat
             movement.append(i)  # add the person to the list of possible moves
             if cap > 1:  # if there is more space in the boat
                 # iterate; start for-loop with i to prevent duplicates (permutations)
@@ -77,14 +91,13 @@ def expand(state):
     result = []
     # get all possible moves for the current State and capacity
     possible_moves = move(boat_capacity, state, [], result, 0)
-    print('pos_m', possible_moves)
-    for i in possible_moves:  # iterate through all possible state changes
+    for pos_move in possible_moves:  # iterate through all possible state changes
         following = deepcopy(state)
-        for j in i:
-            following.shore[j] = alterbit(state.shore[j])  # move persons
-        following.boat = alterbit(state.boat)  # move boat
-        if visited(following, searched):  # check if state was already visited
-            pass
+        for person_idx in pos_move:
+            following.shore[person_idx] = change_position(state.shore[person_idx])  # move persons
+        following.boat = change_position(state.boat)  # move boat
+        if visited(following):  # check if state was already visited
+            continue
         elif jealousy(following):  # check if there is jealousy
             searched.append(following)
         else:
@@ -93,15 +106,15 @@ def expand(state):
             frontier.append(following)  # add the node to the frontier
 
 
-def DFS():
-    global noStates
+def dfs():
+    no_states = 0
     while True:
-        noStates = noStates + 1
-        print("Visited states: ", noStates)
+        no_states = no_states + 1
+        print("Visited states: ", no_states)
 
         current = frontier.pop()  # examine last item from frontier (LIFO)
 
-        if h(current) == 0:  # goal check
+        if sum(current.shore) == 6:  # goal check
             return current  # if heuristic function equals 0, the goal is reached
 
         expand(current)  # expand and add new states to frontier
@@ -110,30 +123,24 @@ def DFS():
 
 
 if __name__ == '__main__':
-    noCouples = int(input("Enter the number of couples: "))
-    boat_capacity = int(input("How many persons can the boat hold: "))
+    noCouples = 3
+    boat_capacity = 2
 
-    time.perf_counter()
-
-    couple = [0, 0]
     initial = State([], 0)
-    goal = State([], 0)
-    path = []
     frontier = []  # open list (frontier)
     searched = []  # closed list
-    noStates = 0
 
-    for i in range(0, noCouples):  # add couples on left side of the river
-        initial.shore.extend(couple)  # the state will be treated as wife1, wife2, wife3, ... husband1, husband2, ...
+    # the state will be treated as wife1, wife2, wife3, husband1, husband2, husband3
+    initial.shore.extend([0 for _ in range(noCouples * 2)])
 
-    print('initial', initial.shore)
+    print('Initial shore:', initial.shore)
     frontier.append(initial)  # add initial node to frontier
 
-    goal = DFS()  # search with Depth-First-Search
+    goal = dfs()  # search with Depth-First-Search
 
     print("\nSuccess: ", goal.shore, " reached")
     print("Depth: ", goal.depth)
-    for i in goal.path:
-        path.append(i.shore)
+    path = []
+    for item in goal.path:
+        path.append(item.shore)
     print("Path: ", path)
-    print("elapsed time: %.2fs" % time.perf_counter())
