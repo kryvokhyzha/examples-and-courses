@@ -10,9 +10,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String[] groups = { "", "ІС-71", "ІС-72", "ІС-73" };
-    private final String[] faculties = { "", "ФІОТ", "ФПМ", "ІПСА" };
-
     private Spinner groupSpinner, facultiesSpinner;
 
 
@@ -20,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final String[] groups = getResources().getStringArray(R.array.groups);
+        final String[] faculties = getResources().getStringArray(R.array.faculties);
 
         groupSpinner = findViewById(R.id.groups);
         facultiesSpinner = findViewById(R.id.faculties);
