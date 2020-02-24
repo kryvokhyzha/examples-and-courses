@@ -19,7 +19,7 @@ public class ContentFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_content, container, false);
+        View view = inflater.inflate(R.layout.fragment_group, container, false);
 
         final String[] groups = getResources().getStringArray(R.array.groups);
         final String[] faculties = getResources().getStringArray(R.array.faculties);
