@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginTop="15dp">
+
+    <TableRow>
+        <TextView
+            android:textSize="22sp"
+            android:text="@string/faculty_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/faculties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:textSize="22sp"
+            android:text="@string/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:text="@string/ok_btn_name"
+            android:id="@+id/ok_btn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_span="1"
+            android:onClick="showMsg"/>
+
+        <Button
+            android:text="@string/cancel_btn_name"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_span="1"
+            android:onClick="setDefault"/>
+    </TableRow>
+
+</TableLayout>
