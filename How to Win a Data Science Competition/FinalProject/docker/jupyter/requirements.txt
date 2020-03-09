@@ -79,7 +79,7 @@ yellowbrick
 
 # ----- For Graph -----
 #
-graphviz
+# graphviz
 # networkx
 #
 #  --------------------------------
@@ -88,7 +88,7 @@ graphviz
 
 # ----- For NLP -----
 #
-# nltk
+nltk
 # textblob
 # stanford-corenlp
 # corenlp-python
@@ -107,11 +107,11 @@ imblearn
 scikit-learn>=0.22
 scipy>=0.17
 statsmodels
-# fbprophet
+fbprophet
 # pystan
 # 
-# lightgbm
-# catboost
-# xgboost
+lightgbm
+catboost
+xgboost
 #
 # --------------------------------
