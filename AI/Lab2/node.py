@@ -61,7 +61,10 @@ class Node:
 
         for action in legal_actions:
             new_state = self.state.copy()
-            self.do_action(new_state, action)
+            new_state = self.do_action(new_state, action)
+            if self.parent is not None:
+                if (new_state == self.parent.state).all():
+                    continue
             children.append(Node(new_state, self, action))
         return children
 
@@ -100,4 +103,7 @@ class Node:
         return solution, self.depth
 
     def __repr__(self):
-        return 'Node: depth = {}; state = {}'.format(self.depth, self.state)
+        return 'Node: h = {}; depth = {}; state = {}'.format(self.h, self.depth, self.state)
+
+#    def __lt__(self, node):
+#        return (self.state < node.state).all()

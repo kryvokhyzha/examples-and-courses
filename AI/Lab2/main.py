@@ -6,41 +6,39 @@ from node import Node
 
 def recursive_best_first_search(initial_state):
     node = Node(initial_state)
-    result, best_h = rbfs(node, maxsize)
+    result, best_h = rbfs(node, maxsize, 0)
     return result.find_solution()
 
 
-def rbfs(node, h_limit):
+def rbfs(node, h_limit, iter):
     """
     http://chernykh.net/content/view/293/493/
     """
     if node.is_goal:
-        return node, 0
+        return node, None
 
-    successors = []
-    children = node.generate_child()
+    iter += 1
 
-    if not len(children):
+    successors = node.generate_child()
+
+    if not len(successors):
         return None, maxsize
 
-    count = -1
-    for child in children:
-        count += 1
-        successors.append((child.h, count, child))
+    for s in successors:
+        s.h = max(s.h, node.h)
 
     while len(successors):
-        successors.sort()
-        best = successors[0][2]
+        successors.sort(key=lambda x: x.h)
+        best = successors[0]
         if best.h > h_limit:
             return None, best.h
         if len(successors) > 1:
-            alternative = successors[1][0]
+            alternative = successors[1].h
         else:
             alternative = maxsize
         # print(best)
-        result, best.h = rbfs(best, min(h_limit, alternative))
+        result, best.h = rbfs(best, min(h_limit, alternative), iter)
         # print(best.h)
-        successors[0] = (best.h, successors[0][1], best)
         if result is not None:
             return result, best.h
     return None, None
