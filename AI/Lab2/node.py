@@ -18,6 +18,7 @@ class Node:
             assert isinstance(self.goal, np.array)
 
         self.h = self.__heuristic(mode=h_mode)
+        # print(self, self.h)
         self.is_goal = self.__is_goal()
 
     def __find_zero_pos(self):
@@ -68,12 +69,22 @@ class Node:
         """
         Compute the heuristic value for current state.
         """
-        assert mode in {'manhattan', 'misplaced'}
+        assert mode in {'manhattan', 'misplaced', 'linear_m'}
 
         if mode == 'manhattan':
             return np.sum(np.abs(self.state - self.goal)) + self.depth
         elif mode == 'misplaced':
             return np.sum(self.state != self.goal) + self.depth
+        elif mode == 'linear_m':
+            heuristic = 0
+            goal = np.reshape(self.goal, (1, 9))[0].tolist()
+            state = np.reshape(self.state, (1, 9))[0].tolist()
+            for num in range(1, 9):
+                distance = abs(state.index(num) - goal.index(num))
+                i = int(distance / 3)
+                j = int(distance % 3)
+                heuristic += i + j
+            return heuristic + self.depth
 
     def __is_goal(self):
         return (self.state == self.goal).all()
