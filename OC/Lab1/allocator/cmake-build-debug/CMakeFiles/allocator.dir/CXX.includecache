@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/mem_alloc.cpp
+mem_alloc.h
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/mem_alloc.h
+malloc.h
+-
+stdio.h
+-
+
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/mem_alloc.h
+

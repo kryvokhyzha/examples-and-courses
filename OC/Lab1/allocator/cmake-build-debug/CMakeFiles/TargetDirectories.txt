@@ -1,0 +1,3 @@
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/cmake-build-debug/CMakeFiles/allocator.dir
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
