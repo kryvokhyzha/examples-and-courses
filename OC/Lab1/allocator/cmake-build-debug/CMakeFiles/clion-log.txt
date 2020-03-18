@@ -1,4 +1,0 @@
-C:\Users\ROMAN.KRYVOKHYZHA\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\193.6494.38\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" C:\Users\ROMAN.KRYVOKHYZHA\CLionProjects\allocator
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/ROMAN.KRYVOKHYZHA/CLionProjects/allocator/cmake-build-debug
