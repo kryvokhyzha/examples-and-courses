@@ -11,9 +11,6 @@ def recursive_best_first_search(initial_state):
 
 
 def rbfs(node, h_limit, iter):
-    """
-    http://chernykh.net/content/view/293/493/
-    """
     if node.is_goal:
         return node, None
 
