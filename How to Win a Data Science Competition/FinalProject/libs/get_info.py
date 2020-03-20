@@ -72,9 +72,9 @@ def intitial_eda_checks(df: pd.DataFrame) -> None:
 
     # keep=False - marke all duplicates as True
     if len(df[df.duplicated(keep=False)]) > 0:
-        print(df[df.duplicated(keep=False)])
-        df.drop_duplicates(keep='first', inplace=True)
-        print('Warning! df has been mutated!')
+        # print(df[df.duplicated(keep=False)])
+        # df.drop_duplicates(keep='first', inplace=True)
+        print('Number of duplicates - {}'.format(len(df[df.duplicated(keep=False)])))
     else:
         print('No duplicates found.')
 
@@ -220,8 +220,6 @@ def conform_columns(df_reference: pd.DataFrame, df: pd.DataFrame) -> None:
     return df.drop(to_drop, axis=1)
 
 
-import statsmodels.api as sm
-from io import StringIO
 def extract_individual_summary_table_statsmodel(X, y, table_number) -> None:
     """
         Extract individual summary table from statsmodel.summary
@@ -229,6 +227,9 @@ def extract_individual_summary_table_statsmodel(X, y, table_number) -> None:
         1. Take X_test, y_test, and table_number
         2. Return a df
     """
+    import statsmodels.api as sm
+    from io import StringIO
+    
     X = sm.add_constant(X)
     y = y
     model = sm.OLS(y,X).fit()
