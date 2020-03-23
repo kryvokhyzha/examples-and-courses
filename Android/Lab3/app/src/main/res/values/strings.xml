@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Lab3</string>
+    <string name="db_name">app.db</string>
+    <string name="group_name">Група</string>
+    <string name="faculty_name">Факультет</string>
+    <string name="ok_btn_name">OK</string>
+    <string name="open_btn_name">Show records</string>
+    <string name="clear_btn_name">Clear table</string>
+    <string name="cancel_btn_name">Cancel</string>
+    <string name="records_table_name">records</string>
+    <string name="group_column_name">group_name</string>
+    <string name="faculty_column_name">faculty_name</string>
+    <string name="fill_all_fields_msg">Заповніть всі поля!</string>
+    <string name="save_record_msg">Запис збережено!</string>
+    <string name="empty_table_msg">Ви не додадли жодного запису :(</string>
+</resources>
