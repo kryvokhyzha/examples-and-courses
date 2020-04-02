@@ -1,5 +1,3 @@
-import sys
-
 from state import State
 from computation import expand
 
