@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 
-def is_not_valid(current, couples_number=3):
+def is_not_valid(current):
     """
     Check condition for current state.
     Args:
@@ -87,7 +87,7 @@ def move(cap, state, movement, result, start):
 
 
 def expand(state, layer, visited, couples_number=3, boat_capacity=2):
-    """following_state
+    """
     Expand and add new states to layer.
     Args:
         state:
@@ -117,7 +117,7 @@ def expand(state, layer, visited, couples_number=3, boat_capacity=2):
 
         if is_visited(following_state, visited):
             continue
-        elif is_not_valid(following_state, couples_number):
+        elif is_not_valid(following_state):
             visited.append(following_state)
         else:
             following_state.depth += + 1
