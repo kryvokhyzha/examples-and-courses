@@ -11,3 +11,4 @@ class State:
         self.boat = boat
         self.depth = 0
         self.prev_state = None
+        self.h = sum(shore) / 2

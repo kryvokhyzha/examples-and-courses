@@ -1,9 +1,12 @@
 from state import State
 from computation import expand
+from math import inf
+from copy import deepcopy
 
 
-def dfs():
+def hill_climbing():
     state_number = 0
+    global_best_score = -1 * inf
     while True:
         state_number = state_number + 1
         print("Visited states: ", state_number)
@@ -11,18 +14,41 @@ def dfs():
         if not layer:
             return None
 
-        current = layer.pop()  # get last item
+        best_idx = get_idx_of_best_state()
+        if best_idx is None:
+            return None
 
-        if sum(current.shore) == 6:
-            return current
+        best_state = layer.pop(best_idx)
 
-        print('Depth:', current.depth)
-        print('current', current.shore)
+        if best_state.h < global_best_score:
+            return None
+        else:
+            global_best_score = best_state.h
 
-        expand(current, layer, visited)
-        visited.append(current)
+        if sum(best_state.shore) == 6:
+            return best_state
+
+        print('Depth:', best_state.depth)
+        print('current', best_state.shore)
+
+        expand(best_state, layer, visited)
+        visited.append(best_state)
 
         print()
+
+
+def get_idx_of_best_state():
+    best_h = -1 * inf
+    best_idx = None
+    for idx, state in enumerate(layer):
+        if state.h >= best_h:
+            best_h = state.h
+            best_idx = idx
+
+    if best_idx is not None:
+        return best_idx
+    else:
+        return None
 
 
 def get_res(state, buffer):
@@ -45,7 +71,7 @@ if __name__ == '__main__':
     print('Initial shore:', initial.shore)
     layer.append(initial)
 
-    goal = dfs()
+    goal = hill_climbing()
 
     if goal is None:
         print('\nCan`t find path!')
