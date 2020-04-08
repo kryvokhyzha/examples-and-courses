@@ -11,16 +11,32 @@ def is_not_valid(current):
     """
     cp = [change_position(s) for s in current.shore]
 
-    if sum(current.shore[:3]) == sum(current.shore[3:]) or \
-            (sum(current.shore[:3]) >= 0 and sum(current.shore[3:]) == 0) or \
-            (sum(current.shore[:3]) == 0 and sum(current.shore[3:]) >= 0) or \
-            (sum(cp[:3]) >= 0 and sum(cp[3:]) == 0) or \
-            (sum(cp[:3]) == 0 and sum(cp[3:]) >= 0) or \
-            sum(cp[:3]) == sum(cp[3:]):
+    missionary_left = sum(cp[:3])
+    missionary_right = sum(current.shore[:3])
+
+    cannibal_left = sum(cp[3:])
+    cannibal_right = sum(current.shore[3:])
+
+    if missionary_left >= 0 and missionary_right >= 0 \
+            and cannibal_left >= 0 and cannibal_right >= 0 \
+            and (missionary_left == 0 or missionary_left >= cannibal_left) \
+            and (missionary_right == 0 or missionary_right >= cannibal_right):
         print(current.shore, '-', 'X')
         return False
-    print(current.shore, '-', 'is not good way')
-    return True
+    else:
+        print(current.shore, '-', 'is not good way')
+        return True
+
+#    if sum(current.shore[:3]) == sum(current.shore[3:]) or \
+#            (sum(current.shore[:3]) >= 0 and sum(current.shore[3:]) == 0) or \
+#            (sum(current.shore[:3]) == 0 and sum(current.shore[3:]) >= 0) or \
+#            (sum(cp[:3]) >= 0 and sum(cp[3:]) == 0) or \
+#            (sum(cp[:3]) == 0 and sum(cp[3:]) >= 0) or \
+#            sum(cp[:3]) == sum(cp[3:]):
+#        print(current.shore, '-', 'X')
+#        return False
+#    print(current.shore, '-', 'is not good way')
+#    return True
 
 
 def change_position(bit):
