@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 
-def is_not_valid(current):
+def is_not_valid(current, couples_number=3):
     """
     Check condition for current state.
     Args:
@@ -26,6 +26,15 @@ def is_not_valid(current):
     else:
         print(current.shore, '-', 'is not good way')
         return True
+
+#    for i in range(0, couples_number):
+#        if current.shore[i] != current.shore[couples_number + i]:
+#            for j in range(couples_number, couples_number * 2):
+#                if current.shore[j] == current.shore[i]:
+#                    print(current.shore, '-', 'X')
+#                    return True
+#    print(current.shore, '-', 'is not good way')
+#    return False
 
 #    if sum(current.shore[:3]) == sum(current.shore[3:]) or \
 #            (sum(current.shore[:3]) >= 0 and sum(current.shore[3:]) == 0) or \
@@ -114,6 +123,7 @@ def expand(state, layer, visited, couples_number=3, boat_capacity=2):
     Returns:
     """
     result = []
+    new_layer = []
 
     # get all possible moves for the current State and capacity
     possible_moves = move(boat_capacity, state, [], result, 0)
@@ -138,4 +148,5 @@ def expand(state, layer, visited, couples_number=3, boat_capacity=2):
         else:
             following_state.depth += + 1
             following_state.prev_state = state
-            layer.append(following_state)
+            new_layer.append(following_state)
+    return new_layer

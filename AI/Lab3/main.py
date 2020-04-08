@@ -1,12 +1,16 @@
+import sys
+
 from state import State
 from computation import expand
 from math import inf
 from copy import deepcopy
+import random
 
 
-def hill_climbing():
+def stochastic_hill_climbing(layer):
     state_number = 0
-    global_best_score = -1 * inf
+    global_best_h = -1 * inf
+    visited = []
     while True:
         state_number = state_number + 1
         print("Visited states: ", state_number)
@@ -14,16 +18,19 @@ def hill_climbing():
         if not layer:
             return None
 
-        best_idx = get_idx_of_best_state()
-        if best_idx is None:
+        # best_idx = get_idx_of_best_state()
+        # if best_idx is None:
+        #    return None
+
+        # best_state = layer.pop(best_idx)
+        best_state = get_randomly_best(layer, global_best_h)
+        if best_state is None:
             return None
 
-        best_state = layer.pop(best_idx)
-
-        if best_state.h < global_best_score:
+        if best_state.h < global_best_h:
             return None
         else:
-            global_best_score = best_state.h
+            global_best_h = best_state.h
 
         if sum(best_state.shore) == 6:
             return best_state
@@ -31,13 +38,13 @@ def hill_climbing():
         print('Depth:', best_state.depth)
         print('current', best_state.shore)
 
-        expand(best_state, layer, visited)
+        layer = expand(best_state, layer, visited)
         visited.append(best_state)
 
         print()
 
 
-def get_idx_of_best_state():
+def get_idx_of_best_state(layer):
     best_h = -1 * inf
     best_idx = None
     for idx, state in enumerate(layer):
@@ -49,6 +56,18 @@ def get_idx_of_best_state():
         return best_idx
     else:
         return None
+
+
+def get_randomly_best(x, global_best):
+    while True:
+        if len(x) == 0:
+            break
+        elem = random.choice(x)
+        if elem.h < global_best:
+            x.remove(elem)
+        else:
+            return elem
+    return None
 
 
 def get_res(state, buffer):
@@ -63,22 +82,30 @@ if __name__ == '__main__':
     boat_capacity = 2
 
     initial = State([], 0)
-    layer = []  # open list
-    visited = []  # closed list
+    init_layer = []  # open list
 
     initial.shore.extend([0 for _ in range(couples_number * 2)])
 
     print('Initial shore:', initial.shore)
-    layer.append(initial)
+    init_layer.append(initial)
+    best_goal = None
+    best_depth = inf
+    for i in range(1000):
+        print(f'---- Iteration {i+1}')
+        goal = stochastic_hill_climbing(init_layer)
+        if goal is None:
+            continue
+        if best_depth > goal.depth:
+            best_goal = deepcopy(goal)
+            best_depth = best_goal.depth
+        print('---------------------------------------------------------')
 
-    goal = hill_climbing()
-
-    if goal is None:
+    if best_goal is None:
         print('\nCan`t find path!')
         sys.exit(-1)
 
     print('---------------------------------------------------------')
-    print("\nSuccess: ", goal.shore)
-    print("Depth: ", goal.depth)
-    path = get_res(goal, '') + str(initial.shore)
+    print("\nSuccess: ", best_goal.shore)
+    print("Depth: ", best_goal.depth)
+    path = get_res(best_goal, '') + str(initial.shore)
     print("Path: ", path)
