@@ -18,11 +18,6 @@ def stochastic_hill_climbing(layer):
         if not layer:
             return None
 
-        # best_idx = get_idx_of_best_state()
-        # if best_idx is None:
-        #    return None
-
-        # best_state = layer.pop(best_idx)
         best_state = get_randomly_best(layer, global_best_h)
         if best_state is None:
             return None
@@ -42,20 +37,6 @@ def stochastic_hill_climbing(layer):
         visited.append(best_state)
 
         print()
-
-
-def get_idx_of_best_state(layer):
-    best_h = -1 * inf
-    best_idx = None
-    for idx, state in enumerate(layer):
-        if state.h >= best_h:
-            best_h = state.h
-            best_idx = idx
-
-    if best_idx is not None:
-        return best_idx
-    else:
-        return None
 
 
 def get_randomly_best(x, global_best):
