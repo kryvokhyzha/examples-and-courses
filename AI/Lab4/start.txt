@@ -1,0 +1,1 @@
+solve(jar(5, 0), jar(7, 0), target(6), actions(Actions)), length(Actions, Length), write([Length, ' -> ', Actions]).
