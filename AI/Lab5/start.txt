@@ -1,1 +1,3 @@
-dfs([1,2,3, 4,7,5, 6,0,8], [], Path), length(Path, N), write([Length, ' -> ', Path]).
+bestfirst([2/2,1/3,2/3,3/3,3/2,3/1,2/1,1/1,1/2], Sol), length(Sol, Length), write([Length, ' -> ', Sol]).
+bestfirst([2/1,1/2,1/3,3/3,3/2,3/1,2/2,1/1,2/3], Sol), length(Sol, Length), write([Length, ' -> ', Sol]).
+bestfirst([2/2,2/3,1/3,3/1,1/2,2/1,3/3,1/1,3/2], Sol), length(Sol, Length), write([Length, ' -> ', Sol]).
