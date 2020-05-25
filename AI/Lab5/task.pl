@@ -3,7 +3,6 @@
 
 bestfirst( Start, Solution) :-
   expand( [], l( Start, 0/0),  9999, _, yes, Solution).
-	%  Assume 9999 is greater than any f-value
 
 % --------- 1
 
@@ -18,10 +17,10 @@ expand( P, l(N,F/G), Bound, Tree1, Solved, Sol)  :-
   (  bagof( M/C, (s(N,M,C), not(member(M,P))), Succ), 
      !,                                    % Node N has successors
      succlist( G, Succ, Ts),               % Make subtrees Ts
-     bestf( Ts, F1),                       % f-value of best successor
+     bestf( Ts, F1),                       % f-value of best successor	
      expand( P, t(N,F1/G,Ts), Bound, Tree1, Solved, Sol)
      ;
-     Solved = never                        % N has no successors - dead end
+     Solved = never
   ) .
 
 % --------- 3

@@ -1,0 +1,17 @@
+
+	static void Main(string[] args)
+        {
+            int[][] AD = new int[2][2];
+            int res = 0;
+
+            for (int j = 500000000; j > 0; j--)
+            {
+                AD[0][0]++;
+                AD[0][0]++;
+            }
+
+            AM[1][1] = AM[0][0];
+
+            Console.WriteLine(AM[0][0]);
+
+        }
