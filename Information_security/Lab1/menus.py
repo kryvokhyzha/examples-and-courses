@@ -2,9 +2,11 @@ import os
 import sys
 import getpass
 import re
+from math import fabs
+
 from db import db_get_user_by_username, db_update_user, db_select, db_add_new_user
 from user import User
-from math import fabs
+from draw_table import top_rule, fmt_row, bot_rule, mid_rule
 
 
 def cls():
@@ -91,11 +93,23 @@ def print_show_all_users_menu():
     cls()
 
     print('========= SHOW ALL USERS =========')
-    users = db_select()
 
-    for idx, user in enumerate(users):
-        user = User(*user)
-        print(f'{idx+1}.', user)
+    print('\n**Please, use full-screen**\n')
+
+    users = db_select()
+    users.insert(0, ('username', 'password', 'role', 'blocked', 'pass_constraint'))
+
+    num_cols = len(users[0])
+    length_list = [len(str(element)) for row in users for element in row]
+    column_width = max(length_list) + 2
+
+    print(top_rule(column_width, num_cols))
+    for row in users[:-1]:
+        print(fmt_row(row, column_width, 1))
+        print(mid_rule(column_width, num_cols))
+
+    print(fmt_row(users[-1], column_width, 1))
+    print(bot_rule(column_width, num_cols))
 
     print()
     _ = input('Press "enter" to continue...')
@@ -269,12 +283,28 @@ def print_login_menu(mistakes_cnt=3):
     print_general_menu()
 
 
+def print_information_about_author():
+    cls()
+
+    print('========= INFORMATION ABOUT AUTHOR =========')
+
+    print()
+    print('Author: Roman Kryvokhyzha')
+    print('Group: IS-72')
+    print('Individual task 11: Latin letters, Cyrillic symbols and signs of arithmetic operations')
+    print('Admin username: ADMIN')
+    print()
+
+    _ = input('Press "enter" to continue...')
+
+
 def print_general_menu():
     cls()
 
     print('========= GENERAL MENU =========')
     print('1. Login menu')
-    print('2. Exit')
+    print('2. README')
+    print('3. Exit')
     answer = None
     while True:
         if answer is not None:
@@ -285,5 +315,9 @@ def print_general_menu():
             cls()
             break
         elif answer == '2':
+            print_information_about_author()
+            cls()
+            break
+        elif answer == '3':
             sys.exit()
     print_general_menu()
