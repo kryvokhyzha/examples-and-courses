@@ -3,27 +3,7 @@ from typing import Dict
 from user import User
 
 
-def db_table_exists(db='users'):
-    conn = sql.connect(f'{db}.db')
-    cur = conn.cursor()
-
-    cur.executescript(f'''
-        SELECT name FROM sqlite_master 
-        WHERE type = 'table' AND name = '{db}';
-    ''')
-
-    rows = cur.fetchall()
-
-    conn.commit()
-    conn.close()
-
-    return True if rows else False
-
-
 def db_creation(db='users'):
-    if not db_table_exists():
-        return
-
     conn = sql.connect(f'{db}.db')
     cur = conn.cursor()
 
@@ -37,10 +17,18 @@ def db_creation(db='users'):
         );
     ''')
 
-    cur.executescript('''
-            INSERT OR REPLACE INTO users (username, password, role, blocked, pass_constraint) 
-            VALUES ('ADMIN', '', 'admin', 0, 0);
-        ''')
+    cur.execute(f'''
+        SELECT username FROM users 
+        WHERE username = "ADMIN";
+    ''')
+
+    row = cur.fetchone()
+
+    if not row:
+        cur.executescript('''
+                INSERT OR REPLACE INTO users (username, password, role, blocked, pass_constraint) 
+                VALUES ('ADMIN', '', 'admin', 0, 0);
+            ''')
 
     conn.commit()
     conn.close()
@@ -60,13 +48,13 @@ def db_select(db='users'):
     return rows
 
 
-def db_get_user_by_username(username='ADMIN', password='', db='users'):
+def db_get_user_by_username(username='ADMIN', db='users'):
     conn = sql.connect(f'{db}.db')
     cur = conn.cursor()
 
     cur.execute(f'''SELECT u.username, u.password, u.role, u.blocked, u.pass_constraint 
                    FROM users as u
-                   WHERE u.username="{username}" and u.password="{password}"''')
+                   WHERE u.username="{username}"''')
     row = cur.fetchone()
 
     conn.commit()
@@ -88,3 +76,29 @@ def db_update_user(user: User, fields: Dict, db='users'):
 
     conn.commit()
     conn.close()
+
+
+def db_add_new_user(user: User, db='users'):
+    conn = sql.connect(f'{db}.db')
+    cur = conn.cursor()
+
+    cur.execute(f'''
+        SELECT username FROM users 
+        WHERE username = "{user.username}";
+    ''')
+
+    row = cur.fetchone()
+
+    if row is not None or user.username == '':
+        conn.commit()
+        conn.close()
+        return False
+
+    cur.execute('''
+            INSERT OR REPLACE INTO users (username, password, role, blocked, pass_constraint) 
+            VALUES (?, ?, ?, ?, ?);
+        ''', user.get_params())
+
+    conn.commit()
+    conn.close()
+    return True
