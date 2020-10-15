@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import getpass
 import re
@@ -10,7 +10,8 @@ from draw_table import top_rule, fmt_row, bot_rule, mid_rule
 
 
 def cls():
-    os.system('clear')
+    command = 'clear' if sys.platform == 'linux' else 'cls'
+    os.system(command)
 
 
 def print_edit_pass_constr_menu():
@@ -116,7 +117,12 @@ def print_show_all_users_menu():
 
 
 def check_password_constraints(password):
-    return False if len(password) == len(re.sub(r'[^a-zA-Zа-яА-ЯёЁіІ+-/*/]', '', password)) else True
+    if len(re.sub(r'[a-zA-Z]', '', password)) < len(password) and\
+            len(re.sub(r'[а-яА-ЯёЁіІ]', '', password)) < len(password) and\
+            len(re.sub(r'[+-/*/]', '', password)) < len(password):
+        return False
+    else:
+        return True
 
 
 def print_change_password_menu(user: User, mistakes_cnt=3):
@@ -163,8 +169,8 @@ def print_admin_menu(user: User):
     print('1. Change password')
     print('2. Show all users')
     print('3. Add new user')
-    print('4. Block user')
-    print('5. Edit password constraint')
+    print('4. Block/Unblock user')
+    print('5. Add/remove password constraints')
     print('6. Back to GENERAL MENU')
     print('7. Exit')
 
