@@ -1,0 +1,65 @@
+#########################################
+#    Step 1 - Create 1 EC2 instance 	#
+#########################################
+	* AMI: ami-0a559a73
+    * Instance type: c4.large
+    * Instance count: 1
+    * Root volume - 8GB
+
+################################################
+#     Step 2 - Verify log into the instance    #
+################################################
+	* Change permissions to your key:
+	chmod 600 <key-name>.pem 
+	* Log in to instances as centos user: 
+	ssh -i <path-to-key>.pem centos@<public_ip>
+	
+#########################################
+#     Step 3 - Prepare the instance     #
+#########################################
+* Download JDK 1.8 rpm from Oracle official site or from Google doc
+
+* Copy JDK to instance:
+scp -i <path-to-key>.pem jdk-8u144-linux-x64.rpm centos@<public_ip>:/home/centos
+
+* Log in to the instance:
+ssh -i <path-to-key>.pem centos@<public_ip>
+
+* Install JDK:
+sudo yum -y localinstall jdk-8u144-linux-x64.rpm
+
+* Install wget:
+sudo yum -y install wget
+
+##############################################
+#     Step 4 - Install Cloudera Director     #
+##############################################
+* Install cloudera-director repository:
+cd /etc/yum.repos.d/
+sudo wget "https://archive.cloudera.com/director/redhat/7/x86_64/director/cloudera-director.repo"
+
+* Install Cloudera Director server and client by running the following command:
+sudo yum -y install cloudera-director-server cloudera-director-client
+
+* Start the Cloudera Director server by running the following command:
+sudo service cloudera-director-server start
+
+* If the RHEL 7 or CentOS firewall is running on the EC2 instance where you have installed Cloudera Director, disable and stop the firewall with the following commands:
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+
+##############################################
+#     Step 5 - Connect to SOCKS5 proxy       #
+##############################################
+ON MAC:
+* Configure proxy tunnel:
+nohup ssh -i <path-to-key>.pem -CND 8157 centos@<public_ip> &
+
+* Log in to Chrome using the tunnel:
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+--user-data-dir="$HOME/chrome-with-proxy" --proxy-server="socks5://localhost:8157"
+
+* Log in to Cloudera Director: 
+http://<private_ip>:7189
+
+ON WINDOWS: - TBD

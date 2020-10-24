@@ -1,0 +1,26 @@
+##########################################
+#    Step 1 - Log in to some instanse    #
+#    Let is be Cloudera Manager instance #
+##########################################
+ssh -i <path-to-key>.pem centos@<public_ip_of_cm_instance>
+
+#################################################
+#     Step 2 - Download and install Zeppelin    #
+#################################################
+sudo yum -y install wget
+wget http://apache.ip-connect.vn.ua/zeppelin/zeppelin-0.7.3/zeppelin-0.7.3-bin-all.tgz
+
+* Unpack the archive:
+tar xvzf zeppelin-0.7.3-bin-all.tgz
+
+* Make symbolic link for simplicity:
+ln -s zeppelin-0.7.3-bin-all zeppelin
+
+* Ensure we have Java executable: 
+sudo alternatives --install /usr/bin/java java  /usr/java/jdk1.7.0_67-cloudera/bin/java 1
+
+* Start zeppelin daemon:
+zeppelin/bin/zeppelin-daemon.sh start
+
+* Log in to Zeppelin Web UI:
+http://<public_ip_of_cm_instance>:8080
