@@ -1,0 +1,20 @@
+{
+    "poly_type": 0,
+    "degrees": [
+        15,
+        15,
+        15
+    ],
+    "dimensions": [
+        2,
+        2,
+        3,
+        4
+    ],
+    "samples": 45,
+    "input_file": "app/data/default_input/input.csv",
+    "output_file": "output.txt",
+    "weights": 1,
+    "lambda_multiblock": 0,
+    "method": "cjg"
+}

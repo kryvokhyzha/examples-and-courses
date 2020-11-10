@@ -1,0 +1,44 @@
+
+
+.chart {
+  font: 13px/1.3 'Lucida Grande',sans-serif;
+  color: #666;
+  display: table;
+  table-layout: fixed;
+  width: 60%;
+  max-width: 500px;
+  height: 250px;
+  margin-left: 30px;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.1) 2%, rgba(0, 0, 0, 0) 2%);
+  background-size: 100% 50px;
+  background-position: left top;
+}
+.chart li {
+  position: relative;
+  display: table-cell;
+  vertical-align: bottom;
+  height: 200px;
+}
+.chart span {
+  margin: 0 1em;
+  display: block;
+  background: #96c03d;
+  animation: draw 1s ease-in-out;
+}
+.chart span:before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  padding: 5px 1em 0;
+  display: block;
+  text-align: center;
+  content: attr(title);
+  word-wrap: break-word;
+}
+
+@keyframes draw {
+  0% {
+    height: 0;
+  }
+}

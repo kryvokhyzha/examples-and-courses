@@ -1,0 +1,21 @@
+
+.btn-green {
+    width: 120px; 
+    background-color: #96c03d; 
+    color: white; 
+    font-size:1.15em;
+}
+.btn-green:hover {
+  color: white; 
+}
+
+.btn-orange {
+  width: 120px; 
+  background-color:#F9690E;
+  color: white; 
+  font-size:1.15em;
+}
+
+.btn-orange:hover {
+  color: white; 
+}
