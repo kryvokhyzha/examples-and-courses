@@ -132,13 +132,8 @@ dmypy.json
 
 *.zip
 *.gzip
-*.jpg
-*.png
 *.pth
-*.csv
-*.dat
 *.rar
 *.AppImage
-*.tsv
 
 .idea
