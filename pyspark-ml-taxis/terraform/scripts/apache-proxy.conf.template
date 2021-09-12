@@ -1,0 +1,62 @@
+ProxyHTMLLinks	a		href
+ProxyHTMLLinks	area		href
+ProxyHTMLLinks	link		href
+ProxyHTMLLinks	img		src longdesc usemap
+ProxyHTMLLinks	object		classid codebase data usemap
+ProxyHTMLLinks	q		cite
+ProxyHTMLLinks	blockquote	cite
+ProxyHTMLLinks	ins		cite
+ProxyHTMLLinks	del		cite
+ProxyHTMLLinks	form		action
+ProxyHTMLLinks	input		src usemap
+ProxyHTMLLinks	head		profile
+ProxyHTMLLinks	base		href
+ProxyHTMLLinks	script		src for
+
+ProxyHTMLLinks	frame		src longdesc
+ProxyHTMLLinks	iframe		src longdesc
+ProxyHTMLLinks	body		background
+ProxyHTMLLinks	applet		codebase
+
+
+ProxyHTMLEvents	onclick ondblclick onmousedown onmouseup \
+		onmouseover onmousemove onmouseout onkeypress \
+		onkeydown onkeyup onfocus onblur onload \
+		onunload onsubmit onreset onselect onchange
+
+
+<VirtualHost *:80>
+    ServerName {{aliasHostName}}
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+     <Location />
+        AuthType Basic
+        AuthName "Dimajix Training Environment"
+        AuthBasicProvider file
+        AuthUserFile "{{htpasswd}}"
+        Require user {{username}}
+    </Location>
+</VirtualHost>
+
+
+<VirtualHost *:443>
+    ServerName {{aliasHostName}}
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+    SSLEngine On
+    SSLCompression off
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:ECDHE-RSA-AES128-SHA
+    SSLCertificateFile /etc/httpd/ssl/{{aliasHostName}}.cert
+
+     <Location />
+        AuthType Basic
+        AuthName "Dimajix Training Environment"
+        AuthBasicProvider file
+        AuthUserFile "{{htpasswd}}"
+        Require user {{username}}
+    </Location>
+</VirtualHost>
+

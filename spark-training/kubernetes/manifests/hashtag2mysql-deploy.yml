@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashtag2mysql
+spec:
+  selector:
+    matchLabels:
+      app: hashtag2mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hashtag2mysql
+    spec:
+      containers:
+        - name: hashtag2mysql
+          image: "874361956431.dkr.ecr.eu-central-1.amazonaws.com/dimajix-training/hashtag2mysql"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "0.5"
+            requests:
+              memory: "200Mi"
+              cpu: "0.2"
