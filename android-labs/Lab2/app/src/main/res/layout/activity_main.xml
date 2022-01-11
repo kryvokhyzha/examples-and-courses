@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:layout_marginBottom="15dp"
+android:layout_marginTop="15dp">
+
+<TableRow>
+    <fragment
+        android:id="@+id/facultyFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.lab2.FacultyFragment"/>
+</TableRow>
+
+<TableRow>
+    <fragment
+        android:id="@+id/groupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.lab2.GroupFragment"/>
+</TableRow>
+
+<TableRow>
+    <fragment
+        android:id="@+id/buttonFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.lab2.ButtonFragment"/>
+</TableRow>
+
+</TableLayout>

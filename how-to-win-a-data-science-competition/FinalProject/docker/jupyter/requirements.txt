@@ -1,0 +1,117 @@
+# ----- Utiles -----
+#
+tqdm
+#
+# --------------------------------
+
+
+# ----- For DB -----
+#
+# psycopg2-binary==2.8.4
+# aiopg
+# SQLAlchemy==1.3.11
+# mongoengine
+#
+# --------------------------------
+
+
+# ----- For parser -----
+#
+# beautifulsoup4
+# lxml
+# fake_useragent
+#
+# --------------------------------
+
+
+# ----- For TelegramBot -----
+#
+# pyTelegramBotApi
+# aiogram
+#
+# --------------------------------
+
+
+
+# ----- For CV -----
+#
+# torch==1.3.1
+# torchvision==0.4.2
+# tensorflow
+# keras
+# Pillow==6.2.1
+# opencv-python
+#
+# --------------------------------
+
+
+
+# ----- For WEB -----
+#
+# requests
+# aiohttp
+# Flask==1.1.1
+# Flask-Bootstrap==3.3.7.1
+# Flask-Login==0.4.1
+# Flask-Migrate==2.5.2
+# Flask-SQLAlchemy==2.4.1
+# Flask-Uploads==0.2.1
+# Flask-WTF==0.14.2
+# gunicorn
+# streamlit
+#
+# --------------------------------
+
+
+
+# ----- For Visualization -----
+#
+matplotlib
+seaborn
+plotly
+yellowbrick
+# ggplot
+# bokeh
+#
+#  --------------------------------
+
+
+
+# ----- For Graph -----
+#
+# graphviz
+# networkx
+#
+#  --------------------------------
+
+
+
+# ----- For NLP -----
+#
+nltk
+# textblob
+# stanford-corenlp
+# corenlp-python
+# gensim
+# polyglot
+# pattern
+#
+# --------------------------------
+
+
+# ----- For ML -----
+#
+numpy>=1.11
+pandas
+imblearn
+scikit-learn>=0.22
+scipy>=0.17
+statsmodels
+fbprophet
+# pystan
+# 
+lightgbm
+catboost
+xgboost
+#
+# --------------------------------

@@ -1,0 +1,5 @@
+leaf_size,density,check_value,time_elapsed,count_of_ranks,size_of_matrix,
+16,100,0.0,127,2,64,
+32,100,-2.0E-8,160,2,128,
+64,100,0.0,594,2,256,
+128,100,2.5901E-4,2356,2,512,

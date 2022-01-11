@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="items">
-        <item>URL</item>
-        <item>audio1</item>
-        <item>video2</item>
-    </string-array>
-</resources>
