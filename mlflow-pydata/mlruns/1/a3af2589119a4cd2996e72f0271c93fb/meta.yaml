@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/romankryvokhyzha/PycharmProjects/examples-and-courses/mlflow-pydata/mlruns/1/a3af2589119a4cd2996e72f0271c93fb/artifacts
+end_time: 1642083120441
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: a3af2589119a4cd2996e72f0271c93fb
+run_uuid: a3af2589119a4cd2996e72f0271c93fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1642083120119
+status: 3
+tags: []
+user_id: romankryvokhyzha

@@ -1,0 +1,4 @@
+artifact_location: file:///Users/romankryvokhyzha/PycharmProjects/examples-and-courses/mlflow-pydata/mlruns/1
+experiment_id: '1'
+lifecycle_stage: active
+name: PlainRegression
