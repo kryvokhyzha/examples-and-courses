@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+tqdm
+scikit-learn
+seaborn
+jupyterlab
+plotly
+fitter
+shap
+lightgbm
