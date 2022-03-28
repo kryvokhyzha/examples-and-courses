@@ -263,6 +263,9 @@ class DecisionTree(BaseEstimator):
         y_subset : np.array of type float with shape (n_objects, n_classes) in classification 
                    (n_objects, 1) in regression 
             One-hot representation of class labels or target values for corresponding subset
+            
+        depth : int
+            Depth of current node
         
         Returns
         -------
@@ -318,6 +321,24 @@ class DecisionTree(BaseEstimator):
         self.root = self.make_tree(X, y, 0)
 
     def recursive_inference(self, X, node):
+        """
+        Recursively gets the prediction
+        
+        Parameters
+        ----------
+        X : np.array of type float with shape (n_objects, n_features)
+            Feature matrix representing the test set
+
+        node : Node
+            Current Node in the decision tree
+        
+        Returns
+        -------
+        y : np.array of type int with shape (n_objects, num_classes) in classification 
+                   of type float with shape (n_objects, 1) in regression
+            Probabilities of each class for the provided objects in classification or predicted values in regression
+        """
+        
         if node.left_child is not None or node.right_child is not None:
             mask = X[:, node.feature_index] < node.value
             X_left, X_right = X[mask], X[~mask]
