@@ -2,6 +2,10 @@ from node import Node
 
 
 class AstarAlgorithm:
+    """
+    Sources:
+        https://vitalissius.github.io/A-Star-Pathfinding-for-Beginners/
+    """
 
     def __init__(self, initial_state, parent=None, action=None, goal=None, h_strategy='misplaced'):
         self.initial_state = initial_state
@@ -23,14 +27,15 @@ class AstarAlgorithm:
         close_hash_set = set()
 
         while len(open_list) > 0:
-            # find node with minimum Hypothesis-value
-            node = min(open_list, key=lambda x: x.h)
+            # find node with minimum f-value
+            node = min(open_list, key=lambda x: x.f)
 
             # remove node from open-list and add to close-list
             open_list.remove(node)
             open_hash_set.remove(node.hash_value)
             close_hash_set.add(node.hash_value)
 
+            # generate childs of this state
             neighbors = node.generate_child()
             for n in neighbors:
                 if n.hash_value in close_hash_set:

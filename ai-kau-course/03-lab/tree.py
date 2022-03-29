@@ -1,4 +1,8 @@
 import numpy as np
+import pandas as pd
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 import warnings
 from sklearn.base import BaseEstimator
 
@@ -95,7 +99,8 @@ class Node:
     """
     This class is provided "as is" and it is not mandatory to it use in your code.
     """
-    def __init__(self, feature_index, threshold, proba=0):
+    def __init__(self, node_id, feature_index, threshold, proba=0):
+        self.node_id = node_id
         self.feature_index = feature_index
         self.value = threshold
         self.proba = proba
@@ -130,10 +135,16 @@ class DecisionTree(BaseEstimator):
         self.bins = bins
         self.criterion_name = criterion_name
         self.threshold = threshold
+        self.last_node_id = 0
 
         self.depth = 0
         self.root = None  # Use the Node class to initialize it later
         self.debug = debug
+        
+    def get_next_node_id(self):
+        node_id =  self.last_node_id
+        self.last_node_id += 1
+        return node_id
 
     def make_split(self, feature_index, threshold, X_subset, y_subset):
         """
@@ -274,15 +285,15 @@ class DecisionTree(BaseEstimator):
         """
 
         if (
-            X_subset.shape[0] <= self.min_samples_split or
-            depth >= self.max_depth
+                X_subset.shape[0] <= self.min_samples_split or
+                depth >= self.max_depth
         ):
-            new_node = Node(None, None)
+            new_node = Node(self.get_next_node_id(), None, None)
             new_node.proba = np.mean(y_subset, axis=0)
             self.depth = max(depth, self.depth)
         else:
             feature_index, threshold = self.choose_best_split(X_subset, y_subset)
-            new_node = Node(feature_index, threshold)
+            new_node = Node(self.get_next_node_id(), feature_index, threshold)
             (X_left, y_left), (X_right, y_right) = self.make_split(feature_index, threshold, X_subset, y_subset)
 
             if X_left.shape[0] == 0 or X_right.shape[0] == 0:
@@ -318,9 +329,15 @@ class DecisionTree(BaseEstimator):
                 self.n_classes = len(np.unique(y))
             y = one_hot_encode(self.n_classes, y)
 
+        if isinstance(X, pd.core.frame.DataFrame):
+            self.column_names = X.columns.copy()
+            X = X.values.copy()
+        else:
+            self.column_names = [f'feature{x}' for x in range(X.shape[1])]
+            
         self.root = self.make_tree(X, y, 0)
 
-    def recursive_inference(self, X, node):
+    def _recursive_inference(self, X, node):
         """
         Recursively gets the prediction
         
@@ -344,8 +361,8 @@ class DecisionTree(BaseEstimator):
             X_left, X_right = X[mask], X[~mask]
             
             y = np.full((X.shape[0], self.n_classes), [None]*self.n_classes) if self.classification else np.full(X.shape[0], None)
-            y[mask] = self.recursive_inference(X_left, node.left_child)
-            y[~mask] = self.recursive_inference(X_right, node.right_child)
+            y[mask] = self._recursive_inference(X_left, node.left_child)
+            y[~mask] = self._recursive_inference(X_right, node.right_child)
             return y
         else:
             return np.full((X.shape[0], self.n_classes), node.proba) if self.classification else np.full(X.shape[0], node.proba)
@@ -366,8 +383,10 @@ class DecisionTree(BaseEstimator):
             Column vector of class labels in classification or target values in regression
         
         """
+        if isinstance(X, pd.core.frame.DataFrame):
+            X = X.values.copy()
 
-        y_predicted = self.recursive_inference(X, self.root)
+        y_predicted = self._recursive_inference(X, self.root)
         if self.classification:
             if len(y_predicted.shape) == 2 and y_predicted.shape[1] > 1:
                 y_predicted = np.argmax(y_predicted, axis=1)
@@ -393,7 +412,65 @@ class DecisionTree(BaseEstimator):
         
         """
         assert self.classification, 'Available only for classification problem'
+        
+        if isinstance(X, pd.core.frame.DataFrame):
+            X = X.values.copy()
 
-        y_predicted_probs = self.recursive_inference(X, self.root)
+        y_predicted_probs = self._recursive_inference(X, self.root)
         
         return y_predicted_probs
+    
+    def _recursive_plot(self, node, from_list=[], to_list=[]):
+        """
+        Recursively gets the 'from' and 'to' nodes
+        
+        Parameters
+        ----------
+        node : Node
+            Current Node in the decision tree
+        
+        Returns
+        -------
+        from_list : List of type str
+            Label for each 'from' nodes
+        to_list : List of type str
+            Label for each 'to' nodes
+        """
+        
+        from_list.extend([f'Node {node.node_id}: {self.column_names[node.feature_index]} < {node.value}']*2)
+        if node.left_child.feature_index is None or node.right_child.feature_index is None:
+            to_list.extend([
+                f'Node {node.left_child.node_id}: leaf node',
+                f'Node {node.right_child.node_id}: leaf node',
+            ])
+        else:
+            to_list.extend([
+                f'Node {node.left_child.node_id}: {self.column_names[node.left_child.feature_index]} < {node.left_child.value}',
+                f'Node {node.right_child.node_id}: {self.column_names[node.right_child.feature_index]} < {node.right_child.value}',
+            ])
+        
+            self._recursive_plot(node.left_child, from_list=from_list, to_list=to_list)
+            self._recursive_plot(node.right_child, from_list=from_list, to_list=to_list)
+        return from_list, to_list
+    
+    def plot_decision_tree(self, ax=None):
+        """
+        Visualize decision tree structure
+        
+        Parameters
+        ----------
+        ax : Matplotlib Axes object, optional
+            Draw the graph in the specified Matplotlib axes.
+        """
+        if ax is None:
+            _, ax = plt.subplots(1,1, figsize=(16,16))
+        from_list, to_list = self._recursive_plot(self.root, from_list=[], to_list=[])
+        # Build a dataframe with your connections
+        df = pd.DataFrame({'from': from_list, 'to': to_list})
+        
+        # Build your graph
+        G = nx.from_pandas_edgelist(df, 'from', 'to')
+        
+        # Custom the labels:
+        nx.draw(G, ax=ax, with_labels=True, node_size=1, node_color="skyblue", font_color='black', node_shape="s", alpha=0.5, linewidths=40, verticalalignment='top')
+        plt.show()

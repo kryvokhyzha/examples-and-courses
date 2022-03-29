@@ -16,14 +16,11 @@
     [7, 0, 5]
 
 Параметри:
-    h_mode in {'misplaced', 'manhattan', 'None'}
+    h_mode in {'manhattan', 'misplaced', 'None'}
 
 Автор:
     Кривохижа Роман Андрійович
     КАУ, 122
-
-Джерела:
-    https://vitalissius.github.io/A-Star-Pathfinding-for-Beginners/
 """
 
 import numpy as np
