@@ -1,0 +1,13 @@
+torch
+torchvision
+GPUtil==1.4.0
+numpy
+BentoML==0.13.1
+pydantic==1.8.2
+imageio
+numpy
+opencv-python
+Pillow
+torchserve==0.5.0
+torch-model-archiver==0.4.2
+torch-workflow-archiver==0.1.2

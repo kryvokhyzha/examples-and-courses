@@ -1,0 +1,8 @@
+.idea
+.ipynb_checkpoints
+log
+data/cifar*
+serving_faceparser/output/*
+*.mp3
+*.mp4
+*.mkv
