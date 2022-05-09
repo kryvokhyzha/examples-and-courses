@@ -1,14 +1,54 @@
 import time
 import glob
 import torch
+import numpy as np
+import shutil
+from tensorboardX import SummaryWriter
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
 from tqdm import tqdm
 from datasets import prepare_data_for_model
 from utils.meters import AverageMeter, ProgressMeter
 from utils.functions import accuracy, f1, precision, recall
+from utils.functions import save_checkpoint
 
 import warnings
 warnings.filterwarnings("ignore")
+
+
+def train_model(model, optimizer, scheduler, criterion, train_dataloader, val_dataloader, opt, target_metric='f1_avg', best_target_metric=-np.inf):
+    model_writer_path = opt.path_to_tensorboard_logs / model.__class__.__name__
+
+    if model_writer_path.exists():
+        shutil.rmtree(model_writer_path)
+    writer = SummaryWriter(log_dir=str(model_writer_path))
+
+    for epoch in range(opt.start_epoch, opt.epochs):
+        # train for one epoch
+        _ = train_one_epoch(train_dataloader, model, criterion, optimizer, epoch, opt.device, opt.print_freq, writer)
+
+        # evaluate on validation set
+        val_metrics = validate_one_epoch(val_dataloader, model, criterion, epoch, opt.device, opt.print_freq, writer)
+        
+        # learning rate scheduler step
+        scheduler.step(val_metrics['loss_avg'])
+
+        # remember best value and save checkpoint
+        target_metric_value = val_metrics[target_metric]
+        is_best = target_metric_value > best_target_metric
+        best_target_metric = max(target_metric_value, best_target_metric)
+
+        save_checkpoint(
+            {
+                'epoch': epoch,
+                'state_dict': model.state_dict(),
+                f'best_{target_metric}': best_target_metric,
+                'optimizer' : optimizer.state_dict(),
+            },
+            is_best,
+            filename=str(opt.path_to_models / f'{model.__class__.__name__}_checkpoint.pth'),
+            best_filename=str(opt.path_to_models / f'{model.__class__.__name__}_model_best.pth'),
+        )
+    writer.close()
 
 
 def train_one_epoch(train_loader, model, criterion, optimizer, epoch, device, print_freq, writer):

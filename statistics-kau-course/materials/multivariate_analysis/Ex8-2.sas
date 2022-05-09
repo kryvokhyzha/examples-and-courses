@@ -1,0 +1,26 @@
+/* EXAMPLE 8.2 */
+DATA STEEL;
+  INFILE 'T8_1_STEEL.dat';
+  INPUT TEMP Y1 Y2;
+TITLE 'EXAMPLE 8.2';
+PROC IML;
+  USE STEEL;
+  READ ALL VAR {Y1 Y2} INTO X;
+  X1 = X[1:5,];
+  X2 = X[6:12,];
+  N1 = NROW(X1);
+  N2 = NROW(X2);
+  X1BAR = 1/N1*X1`*J(N1,1);
+  X2BAR = 1/N2*X2`*J(N2,1);
+  S1 = 1/(N1-1)*X1`*(I(N1)-1/N1*J(N1))*X1;
+  S2 = 1/(N2-1)*X2`*(I(N2)-1/N2*J(N2))*X2;
+  Spl = 1/(N1+N2-2)*((N1-1)*S1+(N2-1)*S2);
+  t1 = (X1BAR[1]-X2BAR[1])/SQRT(Spl[1,1]*(1/n1+1/n2));
+  t2 = (X1BAR[2]-X2BAR[2])/SQRT(Spl[2,2]*(1/n1+1/n2));
+  a = INV(Spl)*(X1BAR-X2BAR);
+  z1 = a`*X1`;
+  z1 = z1`;
+  z2 = a`*X2`;
+  z2 = z2`;
+  PRINT X1BAR,X2BAR,Spl,t1,t2,a,z1,z2;
+run;quit;

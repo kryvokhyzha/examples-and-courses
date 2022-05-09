@@ -1,0 +1,22 @@
+/* EXAMPLE 3.8.1 */
+options ls=80;
+FILENAME DIABETIC 'T3_4_DIABETES.dat';
+DATA DIABETES;
+  INFILE DIABETIC;
+  INPUT subject Weight Fasting Glucose Insulin Resist;
+PROC IML;
+  USE DIABETES;
+  TITLE 'EXAMPLE 3.8.1';
+  READ ALL VAR{Weight Fasting Glucose Insulin Resist} INTO X;
+  N = NROW(X);
+  MEAN = 1/N*X`*J(N,1);
+  YBAR = MEAN[1:2];
+  XBAR = MEAN[3:5];
+  S = 1/(N-1)*X`*(I(N)-1/N*J(N))*X;
+  Syy = S[1:2,1:2];
+  Syx = S[1:2,3:5];
+  Sxx = S[3:5,3:5];
+  Sxy = S[3:5,1:2];
+  PRINT YBAR, XBAR, Syy  Syx, Sxy  Sxx;
+  print x;
+ENDSAS;

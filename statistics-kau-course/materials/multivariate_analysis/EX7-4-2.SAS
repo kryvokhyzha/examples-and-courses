@@ -1,0 +1,32 @@
+/* EXAMPLE 7.4.2 */
+
+TITLE 'EXAMPLE 7.4.2';
+DATA WINE;
+  INFILE 'T7_1_SEISHU.dat';
+  INPUT Y1 Y2 X1-X8;run;
+PROC IML;
+  USE WINE;
+  READ ALL VAR {Y1 Y2 X1 X2 X3 X4 X5 X6 X7 X8} INTO X;
+  n = NROW(X);
+  p = NCOL(X);
+  p1 = 2;
+  p2 = 3;
+  p3 = 3;
+  p4 = 2;
+  S = 1/(n-1)*X`*(I(n)-(1/n)*J(n))*X;
+  S11 = S[1:p1,1:p1];
+  S22 = S[p1+1:p1+p2,p1+1:p1+p2];
+  S33 = S[p1+p2+1:p1+p2+p3,p1+p2+1:p1+p2+p3];
+  S44 = S[p1+p2+p3+1:p1+p2+p3+p4,p1+p2+p3+1:p1+p2+p3+p4];
+  DETS = DET(S);
+  DETS1 = DET(S11);
+  DETS2 = DET(S22);
+  DETS3 = DET(S33);
+  DETS4 = DET(S44);
+  u = DETS/(DETS1*DETS2*DETS3*DETS4);
+  a2 = p**2 - (p1**2 + p2**2 + p3**2 + p4**2);
+  a3 = p**3 - (p1**3 + p2**3 + p3**3 + p4**3);
+  f = a2/2;
+  c = 1 - (2*a3+3*a2)/(12*f*(n-1));
+  uprime = -(n-1)*c*LOG(u);
+  PRINT n,p,S,S11,S22,S33,S44,dets,dets1,dets2,dets3,dets4,u,a2,a3,f,c,uprime;quit;

@@ -28,7 +28,7 @@ class Config:
         self.seed = 42
         self.print_freq = 10
         
-        self.use_descriptors_as_features = True
+        self.use_descriptors_as_features = False
         
         if self.use_descriptors_as_features:
             self.features_type = 'hog+gabor'
