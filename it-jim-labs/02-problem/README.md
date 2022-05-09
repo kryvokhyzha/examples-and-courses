@@ -74,6 +74,6 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 
 ## Possible ways to improve speed or model performance
 
-+ try others descriptors and specific features
-+ use more complicated model
-+ compress the model using ONNX format and create inference session
++ Try others descriptors and specific features
++ Use more complicated model
++ Compress the model using ONNX format and create inference session
