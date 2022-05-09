@@ -109,8 +109,9 @@ class Node:
         
         
 class DecisionTree(BaseEstimator):
+    # (criterion, classification flag)
     all_criterions = {
-        'gini': (gini, True),  # (criterion, classification flag)
+        'gini': (gini, True),
         'entropy': (entropy, True),
         'variance': (variance, False),
         'mad_median': (mad_median, False)

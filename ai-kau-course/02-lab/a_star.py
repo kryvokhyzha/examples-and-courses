@@ -26,11 +26,13 @@ class AstarAlgorithm:
         self.action = action
         self.goal = goal
         self.h_strategy = h_strategy
+        self.close_set_size = 0
 
     def fit(self):
-        final_node = AstarAlgorithm.__algorithm_iter(
+        final_node, close_set_size = AstarAlgorithm.__algorithm_iter(
             init_node=Node(self.initial_state, self.parent, self.action, self.goal, self.h_strategy),
         )
+        self.close_set_size = close_set_size
         return final_node.find_solution()
 
     @staticmethod
@@ -64,5 +66,5 @@ class AstarAlgorithm:
                         open_list.append(n)
             for node in open_list:
                 if node.is_goal:
-                    return node
-        return None
+                    return node, len(close_hash_set)
+        return None, 0

@@ -30,7 +30,7 @@ from utils import catchtime
 
 
 if __name__ == '__main__':
-    h_strategy = 'misplaced'
+    h_strategy = 'None'
     initial_state = np.asarray([[2, 8, 1], [3, 6, 4], [7, 0, 5]])
     goal_state = np.asarray([[1, 2, 3], [4, 0, 5], [6, 7, 8]])
 
@@ -57,4 +57,5 @@ if __name__ == '__main__':
     print('Number of steps:', depth)
     print('F-value:', f_value)
     print('Accumulate F-value:', acc_f)
+    print('Close set size:', algorithm.close_set_size)
     print(f'Algorithm execution time: {elapsed():.3f} seconds')
