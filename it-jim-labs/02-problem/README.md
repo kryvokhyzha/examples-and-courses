@@ -39,7 +39,8 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 │   config.py
 │   01-fc-model-run.ipynb
 │   02-conv-model-run.ipynb
-│   └───datasets
+│
+│   └───models
 │       │   __init__.py
 │       │   flowers_dataset.py
 │       │   preprocessing.py
