@@ -61,8 +61,7 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 + HOG and Gabor filters were used to extract features from image
 + Weights for best models are in `output/models`
 + Tensorboard logs are in `output/tensorboard_logs`
-+ Report notebook - `src/01-fc-model-run.ipynb`
-+ [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/02-problem/src/01-fc-model-run.ipynb)
++ [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/02-problem/src/01-fc-model-run.ipynb) - `src/01-fc-model-run.ipynb`
 
 ## Task 2 - Conv model
 
@@ -71,8 +70,7 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 + Yes, it's possible to use pretrained ViT, resnet-101 or something larger, but to my mind it is overkill for this task
 + Weights for best models are in `output/models`
 + Tensorboard logs are in `output/tensorboard_logs`
-+ Report notebook - `src/02-conv-model-run.ipynb`
-+ [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/02-problem/src/02-conv-model-run.ipynb)
++ [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/02-problem/src/02-conv-model-run.ipynb) - `src/02-conv-model-run.ipynb`
 
 ## Possible ways to improve speed or model performance
 
