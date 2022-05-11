@@ -28,15 +28,16 @@ class Config:
         self.seed = 42
         self.print_freq = 10
         
-        self.use_descriptors_as_features = False
+        self.use_descriptors_as_features = True
         
         if self.use_descriptors_as_features:
-            self.features_type = 'hog+gabor'
+            # self.features_type = 'hog+gabor'
+            self.features_type = 'lbp'
             
             self.lr = 3e-3
             
-            self.img_height = 64
-            self.img_width = 64
+            self.img_height = 224
+            self.img_width = 224
             self.norm_mean = None
             self.norm_std = None
         else:

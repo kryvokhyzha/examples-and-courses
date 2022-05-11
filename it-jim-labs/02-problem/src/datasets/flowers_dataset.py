@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import torch
-from skimage.feature import hog
+from skimage.feature import hog, local_binary_pattern
 from torch.utils.data import Dataset
 
 
@@ -12,7 +12,6 @@ class FlowersDataset(Dataset):
         self.num_classes = num_classes
         self.transform = transform
         self.use_descriptors_as_features = use_descriptors_as_features
-        self.gabor_filters = FlowersDataset._build_gabor_filters()
         self.features_type = features_type
 
     def __len__(self):
@@ -29,11 +28,11 @@ class FlowersDataset(Dataset):
             
         if self.use_descriptors_as_features:
             image = image.permute(1, 2, 0).detach().cpu().numpy()
-            if self.features_type == 'gabor':
-                image = FlowersDataset._get_gabor_features(image, self.gabor_filters)
-            elif self.features_type == 'hog':
+            if self.features_type == 'hog':
                 image = FlowersDataset._get_hog_features(image)
-            elif self.features_type == 'hog+gabor':
+            elif self.features_type == 'lbp':
+                image = FlowersDataset._get_lbp_features(image)
+            elif self.features_type == 'lbp+hog':
                 image = FlowersDataset._get_features(image)
             else:
                 raise NotImplementedError()
@@ -53,17 +52,17 @@ class FlowersDataset(Dataset):
         return {'image': image, 'target': target}
     
     @staticmethod
-    def _get_features(image, filters=None):
-        gabor_f = FlowersDataset._get_gabor_features(image, filters)
+    def _get_features(image):
+        lbp_f = FlowersDataset._get_lbp_features(image)
         hog_f = FlowersDataset._get_hog_features(image)
-        features = np.concatenate([gabor_f, hog_f], axis=0)
+        features = np.concatenate([lbp_f, hog_f], axis=0)
         return features
     
     @staticmethod
     def _get_gabor_features(image, filters=None):
         if filters is None:
             filters = FlowersDataset._build_gabor_filters()
-        features = FlowersDataset._process_gabor(image, filters).flatten()
+        features = FlowersDataset._process_gabor(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY), filters).flatten()
         features = (features / 127.5) - 1.0
         return features
     
@@ -74,10 +73,16 @@ class FlowersDataset(Dataset):
         return features
     
     @staticmethod
+    def _get_lbp_features(image):
+        features = FlowersDataset._process_lbp(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY))
+        return features
+  
+  
+    @staticmethod
     def _build_gabor_filters():
         filters = []
         ksize = 31
-        for theta in np.arange(0, np.pi, np.pi / 4):
+        for theta in np.arange(0, np.pi, np.pi / 16):
             kern = cv2.getGaborKernel((ksize, ksize), 4.0, theta, 10.0, 0.5, 0, ktype=cv2.CV_32F)
             kern /= 1.5*kern.sum()
             filters.append(kern)
@@ -93,9 +98,38 @@ class FlowersDataset(Dataset):
     
     @staticmethod
     def _process_hog(img):
-        features = hog(
-            img, orientations=32, pixels_per_cell=(16, 16),
-            cells_per_block=(4, 4), visualize=False, multichannel=True,
-            feature_vector=True,
-        )
+        def compute(orientations=32, pixels_per_cell=(16, 16), cells_per_block=(4, 4)):
+            features = hog(
+                img, orientations=orientations, pixels_per_cell=pixels_per_cell,
+                cells_per_block=cells_per_block, visualize=False, multichannel=True,
+                feature_vector=True,
+            )
+            return features
+        
+        features = np.concatenate([
+            compute(orientations=32, pixels_per_cell=(16, 16), cells_per_block=(4, 4)),
+            compute(orientations=32, pixels_per_cell=(32, 32), cells_per_block=(4, 4)),
+            compute(orientations=32, pixels_per_cell=(64, 64), cells_per_block=(4, 4)),
+        ], axis=0)
+        return features
+    
+    @staticmethod
+    def _process_lbp(img):
+        def compute(numPoints, radius, eps=1e-7):
+            lbp = local_binary_pattern(img, numPoints, radius, method="uniform")
+            features, _ = np.histogram(
+                lbp.ravel(),
+                bins=np.arange(0, numPoints + 3),
+                range=(0, numPoints + 2)
+            )
+            # normalize the histogram
+            features = features.astype("float")
+            features /= (features.sum() + eps)
+            return features
+        
+        features = np.concatenate([
+            compute(numPoints=512, radius=11),
+            compute(numPoints=512, radius=21),
+            compute(numPoints=512,radius= 51)
+        ], axis=0)
         return features

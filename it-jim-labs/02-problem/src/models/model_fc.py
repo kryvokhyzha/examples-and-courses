@@ -32,7 +32,7 @@ class FlowersFcModel(nn.Module):
         if not final_layer:
             return nn.Sequential(
                 nn.Linear(in_features, output_features),
-                nn.LeakyReLU(negative_slope=0.2, inplace=True),
+                nn.ReLU(inplace=True),
                 nn.BatchNorm1d(output_features),
             )
         else:

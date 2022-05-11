@@ -15,11 +15,11 @@ def prepare_data_for_model(path_to_image, transform=None, use_descriptors_as_fea
         
     if use_descriptors_as_features:
         image = image.permute(1, 2, 0).detach().cpu().numpy()
-        if features_type == 'gabor':
-            image = FlowersDataset._get_gabor_features(image)
-        elif features_type == 'hog':
+        if features_type == 'hog':
             image = FlowersDataset._get_hog_features(image)
-        elif features_type == 'hog+gabor':
+        elif features_type == 'lbp':
+            image = FlowersDataset._get_lbp_features(image)
+        elif features_type == 'lbp+hog':
             image = FlowersDataset._get_features(image)
         else:
             raise NotImplementedError()
