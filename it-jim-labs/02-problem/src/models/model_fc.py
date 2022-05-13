@@ -7,14 +7,12 @@ class FlowersFcModel(nn.Module):
     ):
         super(FlowersFcModel, self).__init__()
         self.encoder = nn.Sequential(
-            self._make_disc_block(in_features, hidden_dim),
+            self._make_disc_block(in_features, hidden_dim * 2),
             nn.Dropout(p=dropout_rate, inplace=True),
-            self._make_disc_block(hidden_dim, hidden_dim // 8),
+            self._make_disc_block(hidden_dim * 2, hidden_dim * 2),
             nn.Dropout(p=dropout_rate, inplace=True),
-            self._make_disc_block(hidden_dim // 8, hidden_dim // 16),
-            nn.Dropout(p=dropout_rate, inplace=True),
-            self._make_disc_block(hidden_dim // 16, hidden_dim // 32),
-            self._make_disc_block(hidden_dim // 32, num_classes, final_layer=True),
+            self._make_disc_block(hidden_dim * 2, hidden_dim // 8),
+            self._make_disc_block(hidden_dim // 8, num_classes, final_layer=True),
         )
         
     def forward(self, x):

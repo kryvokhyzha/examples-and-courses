@@ -31,7 +31,6 @@ class Config:
         self.use_descriptors_as_features = True
         
         if self.use_descriptors_as_features:
-            # self.features_type = 'hog+gabor'
             self.features_type = 'lbp'
             
             self.lr = 3e-3

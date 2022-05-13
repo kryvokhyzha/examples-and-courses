@@ -69,15 +69,15 @@ train_transformations_without_norm = A.Compose([
     T.ISONoise(color_shift=(0.01, 0.05), intensity=(0.1, 0.5), p=0.1),
     
     A.OneOf([
-        T.ToSepia(p=1),
-        T.ToGray(p=1),
+        T.ToSepia(p=0.9),
+        T.ToGray(p=0.9),
     ], p=0.2),
     
     A.OneOf([
         A.GaussianBlur(blur_limit=(5, 5), p=0.9),
         A.MedianBlur(blur_limit=5, p=0.9),
         T.MotionBlur(blur_limit=5, p=0.9),
-    ], p=0.3),
+    ], p=0.2),
         
     ToTensorV2(),
 ])

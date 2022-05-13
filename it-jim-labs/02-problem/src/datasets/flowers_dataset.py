@@ -98,7 +98,7 @@ class FlowersDataset(Dataset):
     
     @staticmethod
     def _process_hog(img):
-        def compute(orientations=32, pixels_per_cell=(16, 16), cells_per_block=(4, 4)):
+        def compute(orientations=9, pixels_per_cell=(8, 8), cells_per_block=(3, 3)):
             features = hog(
                 img, orientations=orientations, pixels_per_cell=pixels_per_cell,
                 cells_per_block=cells_per_block, visualize=False, multichannel=True,
@@ -107,9 +107,8 @@ class FlowersDataset(Dataset):
             return features
         
         features = np.concatenate([
-            compute(orientations=32, pixels_per_cell=(16, 16), cells_per_block=(4, 4)),
-            compute(orientations=32, pixels_per_cell=(32, 32), cells_per_block=(4, 4)),
-            compute(orientations=32, pixels_per_cell=(64, 64), cells_per_block=(4, 4)),
+            compute(orientations=19, pixels_per_cell=(64, 64), cells_per_block=(3, 3)),
+            compute(orientations=29, pixels_per_cell=(96, 96), cells_per_block=(3, 3)),
         ], axis=0)
         return features
     
@@ -129,7 +128,7 @@ class FlowersDataset(Dataset):
         
         features = np.concatenate([
             compute(numPoints=512, radius=11),
-            compute(numPoints=512, radius=21),
-            compute(numPoints=512,radius= 51)
+            compute(numPoints=512, radius=51),
+            compute(numPoints=512, radius=96),
         ], axis=0)
         return features

@@ -65,9 +65,10 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 
 ## Task 2 - Conv model
 
-+ As a model I use pretrained resnet-18
++ As a model I use pretrained `resnet-18`
 + This model is chosen in terms of the balance between learning speed and model quality
-+ Yes, it's possible to use pretrained ViT, resnet-101 or something larger, but to my mind it is overkill for this task
++ Yes, it's possible to use pretrained `ViT`, `resnet-101` or something larger, but to my mind it is **overkill** for this task
++ Finetuning it's a powerful technique, but let's train model, passing the gradient through entire network and learning all possible weights, because of small size of our model
 + Weights for best models are in `output/models`
 + Tensorboard logs are in `output/tensorboard_logs`
 + [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/02-problem/src/02-conv-model-run.ipynb) - `src/02-conv-model-run.ipynb`
