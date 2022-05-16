@@ -11,16 +11,13 @@ class Config:
         self.path_to_predictions = self.path_to_output / 'predictions'
         self.path_to_tensorboard_logs = self.path_to_output / 'tensorboard_logs'
         
-        self.classes = ('daisy', 'dandelion', 'roses', 'sunflowers', 'tulips')
-        self.class_to_idx = {label: idx for idx, label in enumerate(self.classes)}
-        self.idx_to_class = {idx: label  for idx, label in enumerate(self.classes)}
-        self.validation_ratio = 0.2
+        self.autoencoder_data_ratio = 0.5
         self.shuffle = True
         self.use_stratify = True
         
         self.start_epoch = 0
-        self.epochs = 10
-        self.batch_size = 32
+        self.epochs = 15
+        self.batch_size = 128
         self.num_workers = 4
         self.pin_memory = True
         self.use_gpu = True
@@ -28,27 +25,17 @@ class Config:
         self.seed = 42
         self.print_freq = 10
         
-        self.use_descriptors_as_features = False
+        self.disc_hidden_channels = 16
+        self.autoencoder_hidden_channels = 16
+        self.encoder_out_channels = self.autoencoder_hidden_channels * 8
         
-        if self.use_descriptors_as_features:
-            self.features_type = 'lbp'
-            
-            self.lr = 3e-3
-            
-            self.img_height = 224
-            self.img_width = 224
-            self.norm_mean = None
-            self.norm_std = None
-        else:
-            self.features_type = None
-            self.encoder_name = 'resnet18'
-            self.pretrained = True
-            self.lr = 3e-4
-            
-            self.img_height = 224
-            self.img_width = 224
-            self.norm_mean = [0.485, 0.456, 0.406]
-            self.norm_std = [0.229, 0.224, 0.225]
+        self.lr = 3e-4
+        
+        self.n_classes = 10
+        self.img_height = 28
+        self.img_width = 28
+        self.norm_mean = None
+        self.norm_std = None
         
         self._init_dirs()
         

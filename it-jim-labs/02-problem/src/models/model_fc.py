@@ -8,9 +8,9 @@ class FlowersFcModel(nn.Module):
         super(FlowersFcModel, self).__init__()
         self.encoder = nn.Sequential(
             self._make_disc_block(in_features, hidden_dim * 2),
-            nn.Dropout(p=dropout_rate, inplace=True),
+            nn.Dropout(p=dropout_rate),
             self._make_disc_block(hidden_dim * 2, hidden_dim * 2),
-            nn.Dropout(p=dropout_rate, inplace=True),
+            nn.Dropout(p=dropout_rate),
             self._make_disc_block(hidden_dim * 2, hidden_dim // 8),
             self._make_disc_block(hidden_dim // 8, num_classes, final_layer=True),
         )
@@ -30,7 +30,7 @@ class FlowersFcModel(nn.Module):
         if not final_layer:
             return nn.Sequential(
                 nn.Linear(in_features, output_features),
-                nn.ReLU(inplace=True),
+                nn.ReLU(),
                 nn.BatchNorm1d(output_features),
             )
         else:
