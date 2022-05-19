@@ -73,8 +73,6 @@ def main():
             polygon = find_homography(key_points_marker, descriptors_marker, key_points_frame, descriptors_frame, h_marker, w_marker)
             frame = cv2.polylines(frame, [np.int32(polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
             out.write(frame)
-
-        # Break the loop
         else:
             break  
 

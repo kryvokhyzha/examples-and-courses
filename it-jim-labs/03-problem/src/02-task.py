@@ -25,19 +25,19 @@ def find_homography(kp1, desc1, kp2, desc2, h1, w1, matcher='knn'):
         dst_pts  = np.float32([kp2[m.trainIdx].pt for m, n in nn_matches if m.distance < opt.nn_match_ratio * n.distance])
         
     if len(src_pts) < opt.min_match_cnt:
-        return [], len(src_pts)
+        return [], True
 
     ## find homography matrix and do perspective transform
     H, status = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 3.0)
     status = status.ravel() != 0
     if status.sum() < opt.min_match_cnt:
-        return [], len(src_pts)
+        return [], True
     
     src_pts, dst_pts = src_pts[status], dst_pts[status]
     planar = np.float32([[0,0], [0, h1-1], [w1-1, h1-1], [w1-1, 0]])
     planar = cv2.perspectiveTransform(np.expand_dims(planar, axis=0), H).squeeze(axis=0)
     
-    return planar, len(src_pts)
+    return planar, False
 
 
 def detect_features(detector, image):
@@ -48,7 +48,7 @@ def detect_features(detector, image):
 
 
 def main():
-    orb = cv2.ORB_create(opt.n_features)
+    orb = cv2.ORB_create(opt.n_features, 1.1, 13)
     
     marker_img = cv2.cvtColor(cv2.imread(str(opt.path_to_data / opt.input_marker_img_name)), cv2.COLOR_BGR2GRAY)
     h_marker, w_marker = marker_img.shape[:2]
@@ -63,44 +63,36 @@ def main():
 
     out = cv2.VideoWriter(str(opt.path_to_predictions / '02-task-solution.avi'), cv2.VideoWriter_fourcc('M','J','P','G'), fps, (frame_width,frame_height))
 
-    frame_idx = 0
     relaunch = True
+    prev_polygon = None
     while(True):
         ret, frame = cap.read()
-        frame_idx += 1
         if ret:
             frame_grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
-            if frame_idx == 1 or relaunch:
-                print(1)
-                key_points_frame, descriptors_frame = detect_features(orb, frame_grey)
-                sizes = [kp.size for kp in key_points_frame]
-                kp_num = len(key_points_frame)
-                st = np.ones((kp_num, 1))
-                
-                relaunch = False
-            else:
+            if not relaunch:
                 key_points_frame = np.expand_dims(np.float32([kp.pt for kp in key_points_frame]), axis=1)
                 key_points_frame, st, _ = cv2.calcOpticalFlowPyrLK(prev_frame, frame_grey, key_points_frame, None, **opt.lk_params)
-     
-                # key_points_frame = key_points_frame.squeeze(axis=1) # key_points_frame[st == 1]
-                key_points_frame = key_points_frame[st == 1]
-                descriptors_frame = descriptors_frame[st.flatten() == 1]
-                key_points_frame = [cv2.KeyPoint(x=kp[0], y=kp[1], size=size) for kp, size in zip(key_points_frame, sizes)]
+                key_points_frame = key_points_frame.squeeze(axis=1)
+                st = st.flatten()
+                relaunch = (st.sum() / len(key_points_frame)) < 0.95
+                
+                key_points_frame = np.asarray([cv2.KeyPoint(x=kp[0], y=kp[1], size=size) for kp, size in zip(key_points_frame, sizes)])
+                polygon, flag = find_homography(key_points_marker, descriptors_marker, key_points_frame[st == 1], descriptors_frame[st == 1], h_marker, w_marker)
+                
+            if relaunch or flag:
+                key_points_frame, descriptors_frame = detect_features(orb, frame_grey)
+                sizes = [kp.size for kp in key_points_frame]
+                polygon, flag = find_homography(key_points_marker, descriptors_marker, key_points_frame, descriptors_frame, h_marker, w_marker)
+                relaunch = False
             
-            polygon, matched_kp_len = find_homography(key_points_marker, descriptors_marker, key_points_frame, descriptors_frame, h_marker, w_marker)
-            
-            relaunch = matched_kp_len < opt.min_match_cnt or (st.sum() / kp_num) < 0.8
-            frame = cv2.polylines(frame, [np.int32(polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
-            # if not relaunch:
-            #     frame = cv2.polylines(frame, [np.int32(polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
-            #     prev_polygon = polygon.copy()
-            # else:
-            #     frame = cv2.polylines(frame, [np.int32(prev_polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
+            if not flag or prev_polygon is None:
+                frame = cv2.polylines(frame, [np.int32(polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
+                prev_polygon = polygon.copy()
+            else:
+                frame = cv2.polylines(frame, [np.int32(prev_polygon)], True, (0, 255, 0), 1, cv2.LINE_AA)
             prev_frame = frame_grey.copy()
             out.write(frame)
-
-        # Break the loop
         else:
             break  
 
