@@ -40,7 +40,7 @@ Your code should provide **3 execution modes/functions: train** (for training ne
 │   01-fc-model-run.ipynb
 │   02-conv-model-run.ipynb
 │
-│   └───models
+│   └───datasets
 │       │   __init__.py
 │       │   flowers_dataset.py
 │       │   preprocessing.py

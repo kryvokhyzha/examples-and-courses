@@ -31,11 +31,9 @@ To track the object (marker) on the video using two approaches:
 ## Task 1
 
 + Output video is in `output/`
-
-https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/03-problem/output/01-task-solution.mp4
++ [link](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/03-problem/output/01-task-solution.mp4)
 
 ## Task 2
 
 + Output video is in `output/`
-
-https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/03-problem/output/02-task-solution.mp4
++ [link](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/03-problem/output/02-task-solution.mp4)
