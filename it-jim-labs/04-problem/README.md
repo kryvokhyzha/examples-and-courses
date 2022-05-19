@@ -64,24 +64,24 @@ Deliverables for this task:
 + Tensorboard logs are in `output/tensorboard_logs`
 + [Report notebook](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/src/03-report.ipynb) - `src/03-report.ipynb`
 + example of noised data
-![noised-data](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/assets/noised-data.png)
+![noised-data](assets/noised-data.png)
 + example of data denoising
-![denoised-data](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/assets/denoised-data.png)
+![denoised-data](assets/denoised-data.png)
 + metrics on validation set without noise
         + Accuracy: 0.965
         + F1: 0.965
         + Precision: 0.966
         + Recall: 0.965
-        ![denoised-data](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/assets/val-without-noise.png)
+        ![denoised-data](assets/val-without-noise.png)
 + metrics on validation set with noise
         + Accuracy: 0.909
         + F1: 0.909
         + Precision: 0.91
         + Recall: 0.909
-        ![denoised-data](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/assets/val-with-noise.png)
+        ![denoised-data](assets/val-with-noise.png)
 + metrics on denoised validation set
         + Accuracy: 0.938
         + F1: 0.938
         + Precision: 0.939
         + Recall: 0.938
-        ![denoised-data](https://github.com/kryvokhyzha/examples-and-courses/tree/master/it-jim-labs/04-problem/assets/denoised-val.png)
+        ![denoised-data](assets/denoised-val.png)
