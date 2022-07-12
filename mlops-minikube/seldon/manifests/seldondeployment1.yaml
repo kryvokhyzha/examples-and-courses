@@ -1,0 +1,74 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: seldon-preprocessor
+spec:
+  annotations:
+    seldon.io/headless-svc: "true"
+  name: seldon-preprocessor
+  predictors:
+    - componentSpecs:
+        - pdbSpec:
+            maxUnavailable: 1
+          hpaSpec:
+            minReplicas: 1
+            maxReplicas: 2
+            metrics:
+            - resource:
+                name: cpu
+                targetAverageUtilization: 20
+              type: Resource
+          spec:
+            containers:
+              - env:
+                - name: MODEL_NAME
+                  value: src.Preprocessor
+                - name: TRACING
+                  value: '1'
+                - name: JAEGER_AGENT_HOST
+                  value: simplest-agent.jaeger.svc
+                - name: JAEGER_AGENT_PORT
+                  value: '5775'
+                - name: JAEGER_SAMPLER_TYPE
+                  value: const
+                - name: JAEGER_SAMPLER_PARAM
+                  value: '1'
+                image: dvoitekh/seldon_feast:workshop13
+                imagePullPolicy: Always
+                name: model
+                livenessProbe:
+                  failureThreshold: 3
+                  periodSeconds: 20
+                  successThreshold: 1
+                  initialDelaySeconds: 60
+                  timeoutSeconds: 70
+                  httpGet:
+                    path: /health/status
+                    port: http
+                    scheme: HTTP
+                readinessProbe:
+                  failureThreshold: 3
+                  periodSeconds: 20
+                  successThreshold: 1
+                  initialDelaySeconds: 60
+                  timeoutSeconds: 70
+                  httpGet:
+                    path: /health/status
+                    port: http
+                    scheme: HTTP
+                resources:
+                  requests:
+                    memory: '500Mi'
+                    cpu: '500m'
+                  limits:
+                    memory: '1000Mi'
+                    cpu: '1000m'
+            terminationGracePeriodSeconds: 1
+      graph:
+        children: []
+        name: model
+        type: MODEL
+      name: model
+      replicas: 1
+      labels:
+        version: v1
