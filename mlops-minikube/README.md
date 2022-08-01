@@ -1,4 +1,4 @@
-# MLOps
+# MLOps Mini-Course 2022
 
 This is a compact but all-encompassing set of workshops to practice cloud-native MLOps tools like [Kubeflow](https://www.kubeflow.org/), [Pachyderm](https://www.pachyderm.com/), [Feast](https://feast.dev/), and [Seldon](https://www.seldon.io). All this experiments are intended to run in k8s environment. It's recommended to use Minikube deployed on Linux server (minimum 12 GB RAM, 2 CPU, 50 GB of disk space).
 
@@ -107,3 +107,8 @@ There's a sample [Kale notebook](kubeflow/kale/) that generates a KFP pipeline f
 ## Seldon
 
 After you have configured the KFP pipeline, we can use the same data to run Seldon services. Open [Seldon notebook](seldon/) and run all the deployments. You can also explore the code for all components in [this directory](seldon/src/).
+
+
+## ANN indexing (NMSLIB and Scann)
+
+Go to [ann demo directory](ann/) and explore how NMSLIB and Google Scann can solve the vector indexing problem.
