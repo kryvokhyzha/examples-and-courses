@@ -1,0 +1,11 @@
+models/*
+.idea/
+.vscode/
+.DS_Store
+*.pyc
+.ipynb_checkpoints
+__pycache__
+.cache
+*.egg-info
+.python-version
+*.swp
