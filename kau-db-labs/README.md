@@ -5,9 +5,9 @@
 ### Report
 
 1. Setup PostgreSQL
-'''bash
+```bash
 docker run --rm --name pg-docker -e POSTGRES_PASSWORD=cramstack@2018 -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
-'''
+```
 2. DealerQuery
 ![DealerQuery](img/01-01-query.png)
 3. DealerWithSuchDrugsTypesAs
