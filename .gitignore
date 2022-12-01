@@ -138,5 +138,6 @@ dmypy.json
 *.pth
 *.rar
 *.AppImage
+*.mp4
 
 .idea
