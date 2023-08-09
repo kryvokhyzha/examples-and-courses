@@ -1,4 +1,4 @@
-numpy==1.14.1
+numpy==1.22.0
 json==2.0.9
 joblib==0.11
 pandas==0.22.0
